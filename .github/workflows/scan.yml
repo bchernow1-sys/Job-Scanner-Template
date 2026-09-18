@@ -1,0 +1,39 @@
+name: Daily Job Scan
+
+on:
+  schedule:
+    - cron: "30 11 * * *"   # placeholder -- setup_wizard.py sets this
+  workflow_dispatch:         # lets us trigger it manually to test
+
+permissions:
+  contents: write            # allows this workflow to save updated seen_jobs.json back to the repo
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          playwright install --with-deps chromium
+
+      - name: Run scanner
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: python scanner.py
+
+      - name: Save updated job memory
+        run: |
+          git config user.name "Job Scanner Bot"
+          git config user.email "actions@github.com"
+          git add seen_jobs.json
+          git diff --cached --quiet || git commit -m "Update seen jobs"
+          git push
