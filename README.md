@@ -19,11 +19,28 @@ setup wizard below.
 
 ## Step 1: Run the setup wizard
 
-Open **Terminal** (press `Cmd + Space`, type `Terminal`, press Enter),
-then move into this folder and run the wizard:
+Open **Terminal** (press `Cmd + Space`, type `Terminal`, press Enter).
+
+If you downloaded this as a ZIP file (e.g. from GitHub's "Download ZIP"
+button) and unzipped it, it's probably sitting in your Downloads folder.
+Move into it like this:
 
 ```bash
-cd path/to/this/folder
+cd ~/Downloads
+ls
+```
+
+The second command lists what's in your Downloads folder — look for the
+name of the folder you just unzipped, then type (typing the first few
+letters and pressing **Tab** will auto-complete the rest for you):
+
+```bash
+cd FOLDER_NAME
+```
+
+Now run the wizard:
+
+```bash
 python3 setup_wizard.py
 ```
 
